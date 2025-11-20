@@ -6,3 +6,6 @@
 venv/
 .venv/
 __pycache__
+
+# pdf files
+*.pdf
