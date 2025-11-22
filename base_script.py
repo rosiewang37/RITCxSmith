@@ -7,6 +7,8 @@ All rights reserved.
 import requests
 from time import sleep
 import numpy as np
+import os
+from dotenv import load_dotenv
 
 '''
 If you are not familiar with Python or feeling a little bit rusty, highly recommend you to go through the following link:
@@ -22,9 +24,10 @@ and its underlying stocks (BULL and BEAR), while effectively using tender offers
 and maximize returns.
 '''
 
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 API = "http://localhost:9999/v1"
-API_KEY = "Rotman"                     # <-- your key
-HDRS = {"X-API-key": API_KEY}          # change to X-API-Key if your server needs it
+HDRS = {"X-API-key": API_KEY}
 
 # Tickers
 CAD  = "CAD"    # currency instrument quoted in CAD
@@ -89,7 +92,7 @@ def place_mkt(ticker, action, qty): # type: LMT?
 def within_limits():
     # Simple gross/net guard using equity legs only
     pos = positions_map()
-    gross = abs(pos[BULL]) + abs(pos[BEAR]) + abs(pos[RITC])
+    gross = abs(pos[BULL]) + abs(pos[BEAR]) + (2 * abs(pos[RITC]))
     net   = pos[BULL] + pos[BEAR] + pos[RITC]  # simple net; refine as desired
     return (gross < MAX_GROSS) and (MAX_SHORT_NET < net < MAX_LONG_NET)
 
